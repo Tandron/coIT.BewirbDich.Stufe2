@@ -14,14 +14,24 @@ namespace WpfApp.ViewModels
     public class MainViewModel : BindableBase
     {
         private const string _strEndPoint = @"https://localhost:7243/CalculationDoc/";
+        public event Action<CalculationDocViewModel> OpenNewCalcDialog;
         public DelegateCommand ConnectingCommand { get; }
+        public DelegateCommand NewCalcCommand { get; }
         // Die ObservableCollection könnte man auch in eigenen ViewModel CalculationDocMainViewModel auslagern
         public ObservableCollection<CalculationDocViewModel> CalculationDocItemsVm { get; }
 
         public MainViewModel()
         {
             ConnectingCommand = new DelegateCommand(ConnectingFunc);
+            NewCalcCommand = new DelegateCommand(NewCalcFunc);
             CalculationDocItemsVm = new ObservableCollection<CalculationDocViewModel>();
+        }
+
+        private void NewCalcFunc()
+        {
+            CalculationDocViewModel calculationDocVm = new CalculationDocViewModel();
+
+            OpenNewCalcDialog?.Invoke(calculationDocVm);
         }
 
         private void ConnectingFunc()
