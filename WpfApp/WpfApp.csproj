@@ -8,15 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ASP.NetCoreAPI\Models\CalculationDoc.cs" Link="Models\CalculationDoc.cs" />
     <Compile Include="..\ASP.NetCoreAPI\Models\CalculationType.cs" Link="Models\CalculationType.cs" />
-    <Compile Include="..\ASP.NetCoreAPI\Models\Document.cs" Link="Models\Document.cs" />
     <Compile Include="..\ASP.NetCoreAPI\Models\DocumentType.cs" Link="Models\DocumentType.cs" />
     <Compile Include="..\ASP.NetCoreAPI\Models\Risk.cs" Link="Models\Risk.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
   <ItemGroup>

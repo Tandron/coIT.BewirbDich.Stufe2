@@ -1,6 +1,3 @@
-using ASP.NetCoreAPI.Services.Interfaces;
-using ASP.NetCoreAPI.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +7,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IReportsDataAccess, ReportDataAccessService>();
+//builder.Services.AddSingleton<IReportsDataAccess, ReportDataAccessService>();
 
 var app = builder.Build();
 

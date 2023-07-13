@@ -3,7 +3,7 @@ using System;
 
 namespace ASP.NetCoreAPI.Models
 {
-    public class Document
+    public class CalculationDoc
     {
         public Guid Id { get; }
 
@@ -29,7 +29,7 @@ namespace ASP.NetCoreAPI.Models
         public bool VersicherungsscheinAusgestellt { get; set; }
         public decimal Versicherungssumme { get; set; }
 
-        public Document()
+        public CalculationDoc()
         {
             Id = Guid.NewGuid();
         }
