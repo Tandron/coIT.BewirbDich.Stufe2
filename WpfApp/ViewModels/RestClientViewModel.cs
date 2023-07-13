@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 
 // https://www.codeproject.com/Tips/497123/How-to-make-REST-requests-with-Csharp
+// Von dieser Seite besorgen, okay sowas sollte man vielleicht auch selber schreiben. Aber man kann auch einiges lernen.
 namespace WpfApp.ViewModels
 {
     public enum HttpVerb
@@ -51,7 +52,6 @@ namespace WpfApp.ViewModels
             PostData = postData;
         }
 
-
         public string MakeRequest()
         {
             return MakeRequest("");
@@ -67,7 +67,7 @@ namespace WpfApp.ViewModels
 
             if (!string.IsNullOrEmpty(PostData) && Method == HttpVerb.POST)
             {
-                var encoding = new UTF8Encoding();
+                //var encoding = new UTF8Encoding();
                 var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(PostData);
                 request.ContentLength = bytes.Length;
 
