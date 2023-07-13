@@ -14,7 +14,7 @@ namespace WpfApp.ViewModels
     public class MainViewModel : BindableBase
     {
         private const string _strEndPoint = @"https://localhost:7243/CalculationDoc/";
-        public event Action<CalculationDocViewModel> OpenNewCalcDialog;
+        public event Action<CalculationDocViewModel, Action> OpenNewCalcDialog;
         public DelegateCommand ConnectingCommand { get; }
         public DelegateCommand NewCalcCommand { get; }
         // Die ObservableCollection könnte man auch in eigenen ViewModel CalculationDocMainViewModel auslagern
@@ -31,7 +31,15 @@ namespace WpfApp.ViewModels
         {
             CalculationDocViewModel calculationDocVm = new CalculationDocViewModel();
 
-            OpenNewCalcDialog?.Invoke(calculationDocVm);
+            OpenNewCalcDialog?.Invoke(calculationDocVm, () =>
+            {
+                var client = new RestClientViewModel
+                {
+                    EndPoint = _strEndPoint + "additem/1/32/21/212/32/21/323/212/212/3232",
+                    Method = HttpVerb.POST
+                };
+                var json = client.MakeRequest();
+            });
         }
 
         private void ConnectingFunc()

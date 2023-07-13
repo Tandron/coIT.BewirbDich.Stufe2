@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:WpfApp.ViewModels"
         mc:Ignorable="d"
-        Title="Meine Bewerbung" Height="450" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" DataContextChanged="Window_DataContextChanged">
+        Title="Meine Bewerbung" Width="1200" Height="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        DataContextChanged="Window_DataContextChanged">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -15,12 +16,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="10">
-            <Button Content="+ NEU" Margin="4" Command="{Binding NewCalcCommand}"/>
-            <Button Content="Annehmen 👍" Margin="4" Command="{Binding ConnectingCommand}"/>
-            <Button Content="Ausstellen 🖨" Margin="4" Command="{Binding ConnectingCommand}"/>
-            <Button Content="Speichern" Margin="4" HorizontalAlignment="Right" Command="{Binding ConnectingCommand}"/>
+            <Button Content="+ NEU" Margin="4" Command="{Binding NewCalcCommand}" TabIndex="0" Width="75" Height="41"/>
+            <Button Content="Annehmen 👍" Margin="4" Command="{Binding ConnectingCommand}" TabIndex="3" Width="94" Height="41"/>
+            <Button Content="Ausstellen 🖨" Margin="4" Command="{Binding ConnectingCommand}" TabIndex="4" Width="94" Height="41"/>
+            <Button Content="Speichern" Margin="4" HorizontalAlignment="Right" Command="{Binding ConnectingCommand}"
+                    TabIndex="1" Width="75" Height="41"/>
         </DockPanel>
-        <DataGrid Grid.Row="1" Margin="4" Name="DG1" ItemsSource="{Binding CalculationDocItemsVm}" AutoGenerateColumns="False" >
+        <DataGrid Grid.Row="1" Margin="4" Name="DG1" ItemsSource="{Binding CalculationDocItemsVm}" AutoGenerateColumns="False" TabIndex="1">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Typ" Width="100" SelectedItemBinding="{Binding FirstName}">
                     <DataGridComboBoxColumn.HeaderStyle>

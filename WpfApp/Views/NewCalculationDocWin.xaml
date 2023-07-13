@@ -3,13 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:WpfApp.ViewModels"
         mc:Ignorable="d"
         Title="Neue Kalkulation" Height="450" Width="800" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Window.DataContext>
-        <vm:CalculationDocViewModel/>
-    </Window.DataContext>
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Berechnungsart" Margin="10"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Risiko" Margin="10"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Versicherungssumme" Margin="10"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="100000" Margin="10"
+                     PreviewTextInput="TextBoxNumber_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
     </Grid>
 </Window>

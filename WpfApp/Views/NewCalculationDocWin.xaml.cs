@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WpfApp.ViewModels;
 
 namespace WpfApp.Views
@@ -20,10 +10,17 @@ namespace WpfApp.Views
     /// </summary>
     public partial class NewCalculationDocWin : Window
     {
+        private const string numberPattern = "[^0-9.]+";
+
         public NewCalculationDocWin(CalculationDocViewModel calculationDocVm)
         {
             DataContext = calculationDocVm;
             InitializeComponent();
+        }
+
+        private void TextBoxNumber_PreviewTextInput(object sender, TextCompositionEventArgs args)
+        {
+            args.Handled = new Regex(numberPattern).IsMatch(args.Text);
         }
     }
 }

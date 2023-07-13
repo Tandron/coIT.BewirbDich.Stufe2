@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using WpfApp.ViewModels;
 using WpfApp.Views;
 
@@ -22,13 +23,13 @@ namespace WpfApp
             }
         }
 
-        private void MainVm_OpenNewCalcDialog(CalculationDocViewModel calculationDocVm)
+        private void MainVm_OpenNewCalcDialog(CalculationDocViewModel calculationDocVm, Action action)
         {
-            NewCalculationDocWin newCalculationDocWin = new NewCalculationDocWin(calculationDocVm);
+            NewCalculationDocWin newCalculationDocWin = new(calculationDocVm);
 
             if (newCalculationDocWin.ShowDialog() == true)
             {
-
+                action();
             }
         }
     }
