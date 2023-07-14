@@ -1,11 +1,13 @@
 ﻿using ASP.NetCoreAPI.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using RestSharp;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Net;
+using System.Reflection.Metadata;
 using System.Security.Policy;
 using System.Text;
 
@@ -33,6 +35,68 @@ namespace WpfApp.ViewModels
 
             OpenNewCalcDialog?.Invoke(calculationDocVm, () =>
             {
+                decimal beitrag = 0;
+/*
+                //CalculationDocViewModel calculationDocVm = new() // = new Document
+                {
+                    Typ = (int)DocumentType.Offer,
+                    CalculationType = (CalculationType)Enum.Parse(typeof(CalculationType), _cbmCalculationType.Text),
+                    Risk = (Risk)Enum.Parse(typeof(Risk), _cbmRisk.Text),
+                    InkludiereZusatzschutz = _chkBoxIncludeAdditionalProtection.Checked,
+                    ZusatzschutzAufschlag = float.TryParse(_cbmAdditionalProtectionSurcharge.Text.Replace("%", string.Empty), out var zuschlag) ? zuschlag : 0,
+                    HatWebshop = _rBtnHatWebshop.Checked,
+                    Versicherungssumme = decimal.Parse(_txtBoxSumInsured.Text)
+                };
+
+                switch (Document.CalculationType)
+                {
+                    // Versicherungsnehmer, die nach Umsatz abgerechnet werden, mehr als 100.000€ ausweisen und Lösegeld versichern, haben immer mittleres Risiko
+                    case CalculationType.TurnOver:
+                        if (Document.Versicherungssumme > 100000m && Document.InkludiereZusatzschutz)
+                        {
+                            _cbmRisk.SelectedText = Enum.GetName(typeof(Risk), Risk.Mittel);
+                            Document.Risk = Risk.Mittel;
+                        }
+                        Document.Berechnungbasis = (decimal)Math.Pow((double)Document.Versicherungssumme, 0.25d);
+                        beitrag = 1.1m * Document.Berechnungbasis;
+                        if (Document.HatWebshop) // Webshop gibt es nur bei Unternehmen, die nach Umsatz abgerechnet werden
+                            beitrag *= 2;
+                        break;
+
+                    // Versicherungsnehmer, die nach Haushaltssumme versichert werden (primär Vereine) stellen immer ein mittleres Risiko da
+                    case CalculationType.BudgetarySum:
+                        _cbmRisk.SelectedText = Enum.GetName(typeof(Risk), Risk.Mittel);
+                        Document.Risk = Risk.Mittel;
+                        Document.Berechnungbasis = (decimal)Math.Log10((double)Document.Versicherungssumme);
+                        beitrag = 1.0m * Document.Berechnungbasis + 100m;
+                        break;
+
+                    // Versicherungsnehmer, die nach Anzahl Mitarbeiter abgerechnet werden und mehr als 5 Mitarbeiter haben, können kein Lösegeld absichern
+                    case CalculationType.CountEmployees:
+                        if (Document.Berechnungbasis > 5)
+                        {
+                            Document.InkludiereZusatzschutz = false;
+                            Document.ZusatzschutzAufschlag = 0;
+                            _cbmAdditionalProtectionSurcharge.Visible = false;
+                            _chkBoxIncludeAdditionalProtection.Checked = false;
+                        }
+                        Document.Berechnungbasis = Document.Versicherungssumme / 1000;
+                        beitrag = (Document.Berechnungbasis < 4) ? Document.Berechnungbasis * 250m : Document.Berechnungbasis * 200m;
+                        break;
+                }
+
+                if (Document.InkludiereZusatzschutz)
+                    beitrag *= 1.0m + (decimal)Document.ZusatzschutzAufschlag / 100.0m;
+
+                if (Document.Risk == Risk.Mittel)
+                {
+                    beitrag = (Document.CalculationType is CalculationType.BudgetarySum or CalculationType.BudgetarySum) ?
+                        beitrag *= 1.2m : beitrag *= 1.3m;
+                }
+
+                Document.Berechnungbasis = Math.Round(Document.Berechnungbasis, 2);
+                Document.Beitrag = Math.Round(beitrag, 2);
+*/
                 var client = new RestClientViewModel
                 {
                     EndPoint = _strEndPoint + "additem/1/32/21/212/32/21/323/212/212/3232",

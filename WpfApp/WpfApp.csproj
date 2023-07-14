@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <Compile Include="..\ASP.NetCoreAPI\Models\CalculationDoc.cs" Link="Models\CalculationDoc.cs" />
-    <Compile Include="..\ASP.NetCoreAPI\Models\CalculationType.cs" Link="Models\CalculationType.cs" />
-    <Compile Include="..\ASP.NetCoreAPI\Models\DocumentType.cs" Link="Models\DocumentType.cs" />
-    <Compile Include="..\ASP.NetCoreAPI\Models\Risk.cs" Link="Models\Risk.cs" />
   </ItemGroup>
 
   <ItemGroup>

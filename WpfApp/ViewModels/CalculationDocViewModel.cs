@@ -1,23 +1,57 @@
 ﻿using ASP.NetCoreAPI.Models;
 using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
 
 namespace WpfApp.ViewModels
 {
     public class CalculationDocViewModel : BindableBase
     {
+        public enum CalculationTypeEn
+        {
+            TurnOver,           // Umsatz
+            BudgetarySum,       // Haushaltssumme
+            CountEmployees      // Anzahl der Mitarbeiter
+        }
+
+        public enum DocumentTypeEn
+        {
+            Offer,            
+            InsurancePolicy   
+        }
+        
+        public enum RiskEn
+        {
+            Gering,
+            Mittel
+        }
+
         private readonly CalculationDoc _calculationDoc;
+        public List<string> LiCalculationType { get; }
+        public List<string> LiRiskType { get; } = new();
+        public List<string> LiAdditionalProtectionSurcharge { get; } = new();
+        public int AdditionalProtectionSurchargeIndex { get; set; }
 
         public CalculationDocViewModel()
         {
             _calculationDoc =  new CalculationDoc();
+            LiCalculationType = new List<string>()  // Sollte man auch mit i18n nutzen
+            {
+                "Umsatz",
+                "Haushaltssumme",
+                "Anzahl der Mitarbeiter"
+            };
+            LiRiskType.AddRange(Enum.GetNames(typeof(RiskEn)));
+            LiAdditionalProtectionSurcharge.AddRange(new string[] { "10%", "20%", "25%" });
+            Versicherungssumme = 100000;
         }
 
-        public CalculationDocViewModel(CalculationDoc calculationDoc)
+        public CalculationDocViewModel(CalculationDoc calculationDoc) : this()
         {
             _calculationDoc = calculationDoc ?? new();
         }
 
-        public DocumentType Typ
+        public byte Typ
         { 
             get => _calculationDoc.Typ;
             set
@@ -26,12 +60,13 @@ namespace WpfApp.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public CalculationType CalculationType
+
+        public int CalculationType
         { 
             get => _calculationDoc.CalculationType;
             set
             {
-                _calculationDoc.CalculationType = value;
+                _calculationDoc.CalculationType = (byte)value;
                 RaisePropertyChanged();
             }
         }
@@ -82,12 +117,12 @@ namespace WpfApp.ViewModels
             }
         }
 
-        public Risk Risk
+        public int RiskType
         { 
             get => _calculationDoc.Risk;
             set
             {
-                _calculationDoc.Risk = value;
+                _calculationDoc.Risk = (byte)value;
                 RaisePropertyChanged();
             }
         }

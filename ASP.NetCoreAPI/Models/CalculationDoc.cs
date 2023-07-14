@@ -6,8 +6,9 @@ namespace ASP.NetCoreAPI.Models
     {
         public Guid Id { get; }
 
-        public DocumentType Typ { get; set; }
-        public CalculationType CalculationType { get; set; }
+        public byte Typ { get; set; }
+
+        public byte CalculationType { get; set; }
         /// <summary>
         /// Berechnungsart Umsatz => Jahresumsatz in Euro,
         /// Berechnungsart Haushaltssumme => Haushaltssumme in Euro,
@@ -21,7 +22,7 @@ namespace ASP.NetCoreAPI.Models
         //Gibt es nur bei Unternehmen, die nach Umsatz abgerechnet werden
         public bool HatWebshop { get; set; }
 
-        public Risk Risk { get; set; }
+        public byte Risk { get; set; }
 
         public decimal Beitrag { get; set; }
 

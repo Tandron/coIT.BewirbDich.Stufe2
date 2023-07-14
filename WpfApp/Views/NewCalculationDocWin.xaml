@@ -22,16 +22,20 @@
                 <RowDefinition Height="58"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Berechnungsart" Margin="10" TabIndex="1"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10" TabIndex="0"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10" TabIndex="0" ItemsSource="{Binding LiCalculationType}"
+                      SelectedIndex="{Binding CalculationType}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Risiko" Margin="10" TabIndex="3"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10" TabIndex="2"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10" TabIndex="2" ItemsSource="{Binding LiRiskType}"
+                      SelectedIndex="{Binding RiskType}"/>
             <Label Grid.Row="2" Grid.Column="0" Content="Versicherungssumme" Margin="10" TabIndex="8"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="100000" Margin="10" TabIndex="7"
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Versicherungssumme}" Margin="10" TabIndex="7"
                      PreviewTextInput="TextBoxNumber_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center"/>
-            <CheckBox Grid.Row="3" Grid.Column="0" Content="Zusatzschutz" x:Name="chkBoxAddProtect" Margin="14" TabIndex="11"/>
+            <CheckBox Grid.Row="3" Grid.Column="0" Content="Zusatzschutz" x:Name="chkBoxAddProtect" Margin="14" TabIndex="11"
+                      IsChecked="{Binding InkludiereZusatzschutz}"/>
             <ComboBox Grid.Row="3" Grid.Column="1" Visibility="{Binding IsChecked, ElementName=chkBoxAddProtect,Converter={StaticResource b2v}}"
-                      Margin="10" TabIndex="12"/>
-            <ToggleButton Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Content="Hat Webshop" TabIndex="6"/>
+                      Margin="10" TabIndex="12" ItemsSource="{Binding LiAdditionalProtectionSurcharge}"
+                      SelectedIndex="{Binding AdditionalProtectionSurchargeIndex}"/>
+            <ToggleButton Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Content="Hat Webshop" TabIndex="6" IsChecked="{Binding HatWebshop}"/>
         </Grid>
         <Grid DockPanel.Dock="Bottom" Height="58">
             <Grid.ColumnDefinitions>
