@@ -4,25 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Neue Kalkulation" Height="450" Width="800" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid>
-        <Grid>
+        Title="Neue Kalkulation" Width="450" Height="400" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="b2v" />
+    </Window.Resources>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="58"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Berechnungsart" Margin="10"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Risiko" Margin="10"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Versicherungssumme" Margin="10"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="100000" Margin="10"
+            <Label Grid.Row="0" Grid.Column="0" Content="Berechnungsart" Margin="10" TabIndex="1"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10" TabIndex="0"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Risiko" Margin="10" TabIndex="3"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10" TabIndex="2"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Versicherungssumme" Margin="10" TabIndex="8"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="100000" Margin="10" TabIndex="7"
                      PreviewTextInput="TextBoxNumber_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center"/>
+            <CheckBox Grid.Row="3" Grid.Column="0" Content="Zusatzschutz" x:Name="chkBoxAddProtect" Margin="14" TabIndex="11"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Visibility="{Binding IsChecked, ElementName=chkBoxAddProtect,Converter={StaticResource b2v}}"
+                      Margin="10" TabIndex="12"/>
+            <ToggleButton Grid.Row="4" Grid.ColumnSpan="2" Margin="10" Content="Hat Webshop" TabIndex="6"/>
         </Grid>
-    </Grid>
+        <Grid DockPanel.Dock="Bottom" Height="58">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Abbrechen" IsCancel="True" Margin="10" TabIndex="10"/>
+            <Button Grid.Column="1" Content="Kalkulieren" IsDefault="True" Margin="10" TabIndex="9"/>
+        </Grid>
+    </DockPanel>
 </Window>
