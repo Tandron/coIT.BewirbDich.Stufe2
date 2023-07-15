@@ -3,6 +3,8 @@ using Prism.Mvvm;
 using RestSharp;     // Tests
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection.Metadata;
 using WpfApp.Models;
 
 namespace WpfApp.ViewModels
@@ -13,15 +15,36 @@ namespace WpfApp.ViewModels
         public event Action<EditCalculationDocViewModel, Action> OpenNewCalcDialog = delegate { };
         public DelegateCommand ConnectingCommand { get; }
         public DelegateCommand NewCalcCommand { get; }
+        public DelegateCommand AcceptOfferCommand { get; }
+        public DelegateCommand IssueCommand { get; }
+        
         // Die ObservableCollection könnte man auch in eigenen ViewModel CalculationDocMainViewModel auslagern
         public ObservableCollection<CalculationDocViewModel> CalculationDocItemsVm { get; }
+        private CalculationDocViewModel _selectedCalculationDocItemVm = new();
 
         public MainViewModel()
         {
             ConnectingCommand = new DelegateCommand(ConnectingFunc);
             NewCalcCommand = new DelegateCommand(NewCalcFunc);
+            AcceptOfferCommand = new DelegateCommand(AcceptOfferFunc, CanExeAcceptOfferFunc);
+            IssueCommand = new DelegateCommand(IssueFunc, CanExeIssueFunc);
             CalculationDocItemsVm = new ObservableCollection<CalculationDocViewModel>();
             LoadFromDatabase();
+        }
+
+        private bool CanExeIssueFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.InsurancePolicy &&
+                !_selectedCalculationDocItemVm.VersicherungsscheinAusgestellt;
+
+        private void IssueFunc()
+        {
+
+        }
+
+        private bool CanExeAcceptOfferFunc() =>  _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.Offer;
+
+        private void AcceptOfferFunc()
+        {
+
         }
 
         private void LoadFromDatabase()
@@ -43,6 +66,16 @@ namespace WpfApp.ViewModels
                 {
                     CalculationDocItemsVm.Add(new(liDoc));
                 }
+            }
+        }
+
+        public CalculationDocViewModel SelectedCalculationDocItemVm
+        {
+            get => _selectedCalculationDocItemVm;
+            set
+            {
+                _selectedCalculationDocItemVm = value;
+                AcceptOfferCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -69,6 +102,12 @@ namespace WpfApp.ViewModels
                     Method = HttpVerb.POST
                 };
                 var json = client.MakeRequest();
+
+                if (!string.IsNullOrEmpty(json) && int.TryParse(json, out int idOk))
+                {
+                    editCalculationDocVm.Id = idOk;
+                    CalculationDocItemsVm.Add(editCalculationDocVm);
+                }
             });
         }
 

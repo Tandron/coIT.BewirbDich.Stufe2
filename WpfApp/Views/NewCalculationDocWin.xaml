@@ -24,8 +24,8 @@
                 <RowDefinition Height="58"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Berechnungsart" Margin="10" TabIndex="1"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10" TabIndex="0" ItemsSource="{Binding LiCalculationType}"
-                      SelectedIndex="{Binding CalculationType}"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Text="0" Margin="10" TabIndex="0" ItemsSource="{Binding LiType}"
+                      SelectedIndex="{Binding Typ}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Risiko" Margin="10" TabIndex="3"/>
             <ComboBox Grid.Row="1" Grid.Column="1" Text="0" Margin="10" TabIndex="2" ItemsSource="{Binding LiRiskType}"
                       SelectedIndex="{Binding RiskType}"/>

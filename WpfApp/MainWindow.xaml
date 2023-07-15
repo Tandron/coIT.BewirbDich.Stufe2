@@ -17,71 +17,88 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="10">
             <Button Content="+ NEU" Margin="4" Command="{Binding NewCalcCommand}" TabIndex="0" Width="75" Height="41"/>
-            <Button Content="Annehmen 👍" Margin="4" Command="{Binding ConnectingCommand}" TabIndex="3" Width="94" Height="41"/>
-            <Button Content="Ausstellen 🖨" Margin="4" Command="{Binding ConnectingCommand}" TabIndex="4" Width="94" Height="41"/>
+            <Button Content="Annehmen 👍" Margin="4" Command="{Binding AcceptOfferCommand}" TabIndex="3" Width="94" Height="41"/>
+            <Button Content="Ausstellen 🖨" Margin="4" Command="{Binding IssueCommand}" TabIndex="4" Width="94" Height="41"/>
             <Button Content="Speichern" Margin="4" HorizontalAlignment="Right" Command="{Binding ConnectingCommand}"
                     TabIndex="1" Width="75" Height="41"/>
         </DockPanel>
-        <DataGrid Grid.Row="1" Margin="4" Name="DG1" ItemsSource="{Binding CalculationDocItemsVm}" AutoGenerateColumns="False" TabIndex="1">
+        <DataGrid Grid.Row="1" Margin="4" Name="DG1" ItemsSource="{Binding CalculationDocItemsVm}" AutoGenerateColumns="False" TabIndex="1" 
+                  SelectionMode="Single" SelectedItem="{Binding SelectedCalculationDocItemVm}">
             <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Typ" Width="100" SelectedItemBinding="{Binding FirstName}">
-                    <DataGridComboBoxColumn.HeaderStyle>
+                <DataGridTextColumn Header="Typ" Width="140" Binding="{Binding StrType}">
+                    <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
-                    </DataGridComboBoxColumn.HeaderStyle>
-                </DataGridComboBoxColumn>
-                <DataGridComboBoxColumn Header="Dokument" Width="180" SelectedItemBinding="{Binding LastName}">
-                    <DataGridComboBoxColumn.HeaderStyle>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Dokument" Width="180" Binding="{Binding StrCalculationType}">
+                    <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
-                    </DataGridComboBoxColumn.HeaderStyle>
-                </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="Berechnungbasis" Binding="{Binding Email}">
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Berechnungbasis" Binding="{Binding Berechnungbasis}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridCheckBoxColumn Header="Inkludiere&#x0a;Zusatzschutz" Binding="{Binding Status}">
+                <DataGridCheckBoxColumn Header="Inkludiere&#x0a;Zusatzschutz" Binding="{Binding InkludiereZusatzschutz}">
                     <DataGridCheckBoxColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridCheckBoxColumn.HeaderStyle>
                 </DataGridCheckBoxColumn>
-                <DataGridComboBoxColumn Header="Zusatzschutz Aufschlag" SelectedItemBinding="{Binding Status}">
+                <DataGridComboBoxColumn Header="Zusatzschutz Aufschlag" SelectedItemBinding="{Binding ZusatzschutzAufschlag}">
                     <DataGridComboBoxColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridComboBoxColumn.HeaderStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="HatWebshop" Binding="{Binding Status}"/>
-                <DataGridComboBoxColumn Header="Risko" Width="100" SelectedItemBinding="{Binding Status}">
-                    <DataGridComboBoxColumn.HeaderStyle>
+                <DataGridCheckBoxColumn Header="HatWebshop" Binding="{Binding HatWebshop}">
+                    <DataGridCheckBoxColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
-                    </DataGridComboBoxColumn.HeaderStyle>
-                </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="Beitrag" Width="100" Binding="{Binding Status}">
+                    </DataGridCheckBoxColumn.HeaderStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="Risko" Width="100" Binding="{Binding StrRisk}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridCheckBoxColumn Header="Versicherungsschein&#x0a;Ausgestellt" Binding="{Binding Status}">
+                <DataGridTextColumn Header="Beitrag" Width="100" Binding="{Binding Beitrag}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="Versicherungsschein&#x0a;Ausgestellt" Binding="{Binding VersicherungsscheinAusgestellt}">
                     <DataGridCheckBoxColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridCheckBoxColumn.HeaderStyle>
                 </DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Versicherungssumme" Binding="{Binding Status}">
+                <DataGridTextColumn Header="Versicherungssumme" Binding="{Binding Versicherungssumme}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

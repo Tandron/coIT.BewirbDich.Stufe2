@@ -27,6 +27,7 @@ namespace WpfApp.ViewModels
         }
 
         protected readonly CalculationDoc _calculationDoc;
+        public List<string> LiType { get; }
         public List<string> LiCalculationType { get; }
         public List<string> LiRiskType { get; } = new();
         public List<string> LiAdditionalProtectionSurcharge { get; } = new();
@@ -35,11 +36,16 @@ namespace WpfApp.ViewModels
         public CalculationDocViewModel()
         {
             _calculationDoc =  new CalculationDoc();
-            LiCalculationType = new List<string>()  // Sollte man auch mit i18n nutzen
+            LiType = new List<string>()  // Sollte man auch mit i18n nutzen
             {
                 "Umsatz",
                 "Haushaltssumme",
                 "Anzahl der Mitarbeiter"
+            };
+            LiCalculationType = new List<string>()  // Sollte man auch mit i18n nutzen
+            {
+                "Angebot",
+                "Versicherungsschein"
             };
             LiRiskType.AddRange(Enum.GetNames(typeof(RiskEn)));
             LiAdditionalProtectionSurcharge.AddRange(new string[] { "10%", "20%", "25%" });
@@ -51,15 +57,25 @@ namespace WpfApp.ViewModels
             _calculationDoc = calculationDoc ?? new();
         }
 
-        public byte Typ
+        public int Id
+        { 
+            get => _calculationDoc.Id;
+            set => _calculationDoc.Id = value;
+        }
+
+        public string StrType => Typ < LiType.Count ? LiType[Typ] : "";
+
+        public int Typ
         { 
             get => _calculationDoc.Typ;
             set
             {
-                _calculationDoc.Typ = value;
+                _calculationDoc.Typ = (byte)value;
                 RaisePropertyChanged();
             }
         }
+
+        public string StrCalculationType => CalculationType < LiCalculationType.Count ? LiCalculationType[CalculationType] : "";
 
         public int CalculationType
         { 
@@ -116,6 +132,8 @@ namespace WpfApp.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public string StrRisk => RiskType < LiRiskType.Count ? LiRiskType[RiskType] : "";
 
         public int RiskType
         { 

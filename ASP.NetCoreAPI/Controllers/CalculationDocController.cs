@@ -9,11 +9,6 @@ namespace ASP.NetCoreAPI.Controllers
     [Route("[controller]")]
     public class CalculationDocController : ControllerBase
     {
-        private static readonly double[] Summaries = new[]
-        {
-            21.54, 434.43, 21.32, 21.32, 3121.554, 2121.32
-        };
-
         private readonly ILogger<CalculationDocController> _logger;
         private readonly CalculationDocDb _context;
 
@@ -89,7 +84,7 @@ namespace ASP.NetCoreAPI.Controllers
                 _context.CalculationDocs.Add(calculationDoc);
                 _context.SaveChanges();
             }
-            return Ok();
+            return Ok(isOk ? calculationDoc.Id : -1);
         }
     }
 }
