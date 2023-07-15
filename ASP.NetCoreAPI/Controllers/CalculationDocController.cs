@@ -1,4 +1,5 @@
 using ASP.NetCoreAPI.Models;
+using Fluent.Infrastructure.FluentModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Reflection.Metadata;
@@ -15,11 +16,17 @@ namespace ASP.NetCoreAPI.Controllers
         };
 
         private readonly ILogger<CalculationDocController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public CalculationDocController(ILogger<CalculationDocController> logger)
+        public CalculationDocController(ILogger<CalculationDocController> logger, ApplicationDbContext context)
         {
+            _context = context;
             _logger = logger;
         }
+        //public CalculationDocController(ILogger<CalculationDocController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         [HttpGet(Name = "GetCalculationDoc")]
         public IEnumerable<CalculationDoc> Get()
@@ -41,6 +48,21 @@ namespace ASP.NetCoreAPI.Controllers
             return Ok();
         }
 
+        private CalculationDoc CheckCalculationDoc(string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
+            string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
+            string versicherungsscheinAusgestellt, string versicherungssumme, out bool isOk)
+        {
+            CalculationDoc calculationDoc = new();
+            bool typeOk = byte.TryParse(typ, out byte typeB);
+            bool calculationTypeOk = byte.TryParse(calculationType, out byte calculationTypeB);
+
+            if (typeOk) { calculationDoc.Typ = typeB; }
+            if (calculationTypeOk) { calculationDoc.CalculationType = calculationTypeB; }
+
+            isOk = typeOk && calculationTypeOk;
+            return calculationDoc;
+        }
+
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 409)]
@@ -50,6 +72,14 @@ namespace ASP.NetCoreAPI.Controllers
             string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
             string versicherungsscheinAusgestellt, string versicherungssumme)
         {
+            CalculationDoc calculationDoc = CheckCalculationDoc(typ, calculationType, berechnungbasis, inkludiereZusatzschutz,
+                zusatzschutzAufschlag, hatWebshop, risk, beitrag, versicherungsscheinAusgestellt, versicherungssumme, out bool isOk);
+
+            if (!isOk)
+            {
+                //context.Products.Add(product);
+                //context.SaveChanges();
+            }
             return Ok();
         }
     }

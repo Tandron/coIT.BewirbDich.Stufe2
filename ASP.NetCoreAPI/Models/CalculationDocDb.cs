@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace ASP.NetCoreAPI.Models
 {
-    public class CalculationDocDb : DbContext
+    public class CalculationDocDb : IdentityDbContext
     {
         public CalculationDocDb(DbContextOptions<CalculationDocDb> options) : base(options)
         {

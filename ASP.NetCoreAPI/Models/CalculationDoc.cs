@@ -1,12 +1,17 @@
 ﻿using System;
+#if ASPNetCoreAPI
+using System.ComponentModel.DataAnnotations;
+#endif
 
 namespace ASP.NetCoreAPI.Models
 {
     public class CalculationDoc
     {
-//#if ASPNetCoreAPI
-        public Guid Id { get; }
-//#endif
+#if ASPNetCoreAPI
+        [Key]
+#endif
+        public int Id { get; set; }
+
         public byte Typ { get; set; }
 
         public byte CalculationType { get; set; }
@@ -32,7 +37,7 @@ namespace ASP.NetCoreAPI.Models
 
         public CalculationDoc()
         {
-            Id = Guid.NewGuid();
+            //Id = Guid.NewGuid();
         }
     }
 }
