@@ -1,5 +1,4 @@
 using ASP.NetCoreAPI.Models;
-using Fluent.Infrastructure.FluentModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Reflection.Metadata;
@@ -16,18 +15,14 @@ namespace ASP.NetCoreAPI.Controllers
         };
 
         private readonly ILogger<CalculationDocController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly CalculationDocDb _context;
 
-        public CalculationDocController(ILogger<CalculationDocController> logger, ApplicationDbContext context)
+        public CalculationDocController(ILogger<CalculationDocController> logger, CalculationDocDb context)
         {
             _context = context;
             _logger = logger;
         }
-        //public CalculationDocController(ILogger<CalculationDocController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
+ 
         [HttpGet(Name = "GetCalculationDoc")]
         public IEnumerable<CalculationDoc> Get()
         {
@@ -48,6 +43,7 @@ namespace ASP.NetCoreAPI.Controllers
             return Ok();
         }
 
+        // Ja nicht so schön, viel zuviele Parameter
         private CalculationDoc CheckCalculationDoc(string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
             string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
             string versicherungsscheinAusgestellt, string versicherungssumme, out bool isOk)
@@ -55,11 +51,28 @@ namespace ASP.NetCoreAPI.Controllers
             CalculationDoc calculationDoc = new();
             bool typeOk = byte.TryParse(typ, out byte typeB);
             bool calculationTypeOk = byte.TryParse(calculationType, out byte calculationTypeB);
+            bool berechnungbasisOk = decimal.TryParse(berechnungbasis, out decimal berechnungbasisDec);
+            bool inkludiereZusatzschutzOk = bool.TryParse(inkludiereZusatzschutz, out bool inkludiereZusatzschutzB);
+            bool zusatzschutzAufschlagOk = float.TryParse(zusatzschutzAufschlag, out float zusatzschutzAufschlagFloat);
+            bool hatWebshopOk = bool.TryParse(hatWebshop, out bool hatWebshopBool);
+            bool riskOk = byte.TryParse(risk, out byte riskB);
+            bool beitragOk = decimal.TryParse(beitrag, out decimal beitragDec);
+            bool versicherungsscheinAusgestelltOk = bool.TryParse(versicherungsscheinAusgestellt, out bool versicherungsscheinAusgestelltBool);
+            bool versicherungssummeOk = decimal.TryParse(versicherungssumme, out decimal versicherungssummeDec);
 
             if (typeOk) { calculationDoc.Typ = typeB; }
             if (calculationTypeOk) { calculationDoc.CalculationType = calculationTypeB; }
+            if (berechnungbasisOk) { calculationDoc.Berechnungbasis = berechnungbasisDec; }
+            if (inkludiereZusatzschutzOk) { calculationDoc.InkludiereZusatzschutz = inkludiereZusatzschutzB; }
+            if (zusatzschutzAufschlagOk) { calculationDoc.ZusatzschutzAufschlag = zusatzschutzAufschlagFloat; }
+            if (hatWebshopOk) { calculationDoc.HatWebshop = hatWebshopBool; }
+            if (riskOk) { calculationDoc.Risk = riskB; }
+            if (beitragOk) { calculationDoc.Beitrag = beitragDec; }
+            if (versicherungsscheinAusgestelltOk) { calculationDoc.VersicherungsscheinAusgestellt = versicherungsscheinAusgestelltBool; }
+            if (versicherungssummeOk) { calculationDoc.Versicherungssumme = versicherungssummeDec; }
 
-            isOk = typeOk && calculationTypeOk;
+            isOk = typeOk && calculationTypeOk && berechnungbasisOk && inkludiereZusatzschutzOk && zusatzschutzAufschlagOk && hatWebshopOk &&
+                riskOk && beitragOk && versicherungsscheinAusgestelltOk && versicherungssummeOk;
             return calculationDoc;
         }
 
@@ -77,8 +90,8 @@ namespace ASP.NetCoreAPI.Controllers
 
             if (!isOk)
             {
-                //context.Products.Add(product);
-                //context.SaveChanges();
+                _context.CalculationDocs.Add(calculationDoc);
+                _context.SaveChanges();
             }
             return Ok();
         }

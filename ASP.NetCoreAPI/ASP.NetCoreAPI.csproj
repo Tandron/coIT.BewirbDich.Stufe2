@@ -15,7 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fluent.Infrastructure" Version="2.0.0-beta-01" />
+    <None Remove="C:\Users\NinjaShadow\.nuget\packages\microsoft.net.compilers\1.0.0\build\..\tools\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
