@@ -23,14 +23,12 @@ namespace WpfApp
             }
         }
 
-        private void MainVm_OpenNewCalcDialog(CalculationDocViewModel calculationDocVm, Action action)
+        private void MainVm_OpenNewCalcDialog(EditCalculationDocViewModel editCalculationDocVm, Action action)
         {
-            NewCalculationDocWin newCalculationDocWin = new(calculationDocVm);
+            NewCalculationDocWin newCalculationDocWin = new(editCalculationDocVm);
 
             if (newCalculationDocWin.ShowDialog() == true)
-            {
                 action();
-            }
         }
     }
 }

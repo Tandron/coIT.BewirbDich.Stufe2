@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:WpfApp.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:EditCalculationDocViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"
         Title="Neue Kalkulation" Width="450" Height="400" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
@@ -43,7 +45,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="Abbrechen" IsCancel="True" Margin="10" TabIndex="10"/>
-            <Button Grid.Column="1" Content="Kalkulieren" IsDefault="True" Margin="10" TabIndex="9"/>
+            <Button Grid.Column="1" Content="Kalkulieren" IsDefault="True" Margin="10" TabIndex="9" Click="Button_Click"/>
         </Grid>
     </DockPanel>
 </Window>

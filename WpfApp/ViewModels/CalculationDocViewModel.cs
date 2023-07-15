@@ -26,7 +26,7 @@ namespace WpfApp.ViewModels
             Mittel
         }
 
-        private readonly CalculationDoc _calculationDoc;
+        protected readonly CalculationDoc _calculationDoc;
         public List<string> LiCalculationType { get; }
         public List<string> LiRiskType { get; } = new();
         public List<string> LiAdditionalProtectionSurcharge { get; } = new();
@@ -43,7 +43,7 @@ namespace WpfApp.ViewModels
             };
             LiRiskType.AddRange(Enum.GetNames(typeof(RiskEn)));
             LiAdditionalProtectionSurcharge.AddRange(new string[] { "10%", "20%", "25%" });
-            Versicherungssumme = 100000;
+            Versicherungssumme = 100000m;
         }
 
         public CalculationDocViewModel(CalculationDoc calculationDoc) : this()

@@ -12,15 +12,21 @@ namespace WpfApp.Views
     {
         private const string numberPattern = "[^0-9.]+";
 
-        public NewCalculationDocWin(CalculationDocViewModel calculationDocVm)
+        public NewCalculationDocWin(EditCalculationDocViewModel editCalculationDocVm)
         {
-            DataContext = calculationDocVm;
+            DataContext = editCalculationDocVm;
             InitializeComponent();
         }
 
         private void TextBoxNumber_PreviewTextInput(object sender, TextCompositionEventArgs args)
         {
             args.Handled = new Regex(numberPattern).IsMatch(args.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs args)
+        {
+            DialogResult = true;
+            Close();
         }
     }
 }
