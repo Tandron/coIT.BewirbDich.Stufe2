@@ -76,6 +76,7 @@ namespace WpfApp.ViewModels
             {
                 _selectedCalculationDocItemVm = value;
                 AcceptOfferCommand.RaiseCanExecuteChanged();
+                IssueCommand.RaiseCanExecuteChanged();
             }
         }
 
