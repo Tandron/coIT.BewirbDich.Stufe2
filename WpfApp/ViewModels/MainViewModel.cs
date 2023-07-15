@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using RestSharp;     // Tests
 using System;
 using System.Collections.ObjectModel;
+using WpfApp.Models;
 
 namespace WpfApp.ViewModels
 {
@@ -20,6 +21,29 @@ namespace WpfApp.ViewModels
             ConnectingCommand = new DelegateCommand(ConnectingFunc);
             NewCalcCommand = new DelegateCommand(NewCalcFunc);
             CalculationDocItemsVm = new ObservableCollection<CalculationDocViewModel>();
+            LoadFromDatabase();
+        }
+
+        private void LoadFromDatabase()
+        {
+            var client = new RestClientViewModel
+            {
+                EndPoint = _strEndPoint,
+                Method = HttpVerb.GET
+            };
+            var json = client.MakeRequest();
+
+            if (!string.IsNullOrEmpty(json))
+            {
+                JsonRepository jsonRepository = new(json);
+
+                var liDocs = jsonRepository.CalculationDocs;
+
+                foreach ( var liDoc in liDocs)
+                {
+                    CalculationDocItemsVm.Add(new(liDoc));
+                }
+            }
         }
 
         private void NewCalcFunc()

@@ -26,11 +26,7 @@ namespace ASP.NetCoreAPI.Controllers
         [HttpGet(Name = "GetCalculationDoc")]
         public IEnumerable<CalculationDoc> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new CalculationDoc
-            {
-                Beitrag = (decimal)Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return _context.CalculationDocs.ToList();
         }
 
         [ProducesResponseType(typeof(string), 200)]
@@ -88,7 +84,7 @@ namespace ASP.NetCoreAPI.Controllers
             CalculationDoc calculationDoc = CheckCalculationDoc(typ, calculationType, berechnungbasis, inkludiereZusatzschutz,
                 zusatzschutzAufschlag, hatWebshop, risk, beitrag, versicherungsscheinAusgestellt, versicherungssumme, out bool isOk);
 
-            if (!isOk)
+            if (isOk)
             {
                 _context.CalculationDocs.Add(calculationDoc);
                 _context.SaveChanges();
