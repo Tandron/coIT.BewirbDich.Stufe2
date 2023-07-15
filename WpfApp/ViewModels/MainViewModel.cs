@@ -1,16 +1,8 @@
-﻿using ASP.NetCoreAPI.Models;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using RestSharp;
+using RestSharp;     // Tests
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Net;
-using System.Reflection.Metadata;
-using System.Security.Policy;
-using System.Text;
-using System.Xml.Linq;
 
 namespace WpfApp.ViewModels
 {
@@ -34,13 +26,22 @@ namespace WpfApp.ViewModels
         {
             EditCalculationDocViewModel editCalculationDocVm = new();
 
+            //string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
+            //string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
+            //string versicherungsscheinAusgestellt, string versicherungssumme)
+            
             OpenNewCalcDialog?.Invoke(editCalculationDocVm, () =>
             {
                 editCalculationDocVm.CalculationDoc();
 
                 var client = new RestClientViewModel
                 {
-                    EndPoint = _strEndPoint + "additem/1/32/21/212/32/21/323/212/212/3232",
+                    EndPoint = _strEndPoint + "additem/" + editCalculationDocVm.Typ.ToString() + "/" + 
+                        editCalculationDocVm.CalculationType.ToString() + "/" + editCalculationDocVm.Berechnungbasis.ToString() + "/" + 
+                        editCalculationDocVm.InkludiereZusatzschutz.ToString() + "/" + editCalculationDocVm.ZusatzschutzAufschlag.ToString() + "/" +
+                        editCalculationDocVm.HatWebshop.ToString() + "/" + editCalculationDocVm.RiskType.ToString() + "/" +
+                        editCalculationDocVm.Beitrag.ToString() + "/" + editCalculationDocVm.VersicherungsscheinAusgestellt.ToString() + "/" +
+                        editCalculationDocVm.Versicherungssumme.ToString(),
                     Method = HttpVerb.POST
                 };
                 var json = client.MakeRequest();

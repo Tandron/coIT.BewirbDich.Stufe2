@@ -4,8 +4,9 @@ namespace ASP.NetCoreAPI.Models
 {
     public class CalculationDoc
     {
+//#if ASPNetCoreAPI
         public Guid Id { get; }
-
+//#endif
         public byte Typ { get; set; }
 
         public byte CalculationType { get; set; }
