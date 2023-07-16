@@ -1,7 +1,5 @@
 using ASP.NetCoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Reflection.Metadata;
 
 namespace ASP.NetCoreAPI.Controllers
 {
@@ -9,13 +7,11 @@ namespace ASP.NetCoreAPI.Controllers
     [Route("[controller]")]
     public class CalculationDocController : ControllerBase
     {
-        private readonly ILogger<CalculationDocController> _logger;
         private readonly CalculationDocDb _context;
 
-        public CalculationDocController(ILogger<CalculationDocController> logger, CalculationDocDb context)
+        public CalculationDocController(CalculationDocDb context)
         {
             _context = context;
-            _logger = logger;
         }
  
         [HttpGet(Name = "GetCalculationDoc")]
@@ -31,53 +27,7 @@ namespace ASP.NetCoreAPI.Controllers
         [HttpPost("additem", Name = "PostAddItem")]
         public IActionResult PostAddItem([FromBody] CalculationDoc calculationDoc)
         {
-            return Ok();
-        }
-
-        // Ja nicht so schön, viel zuviele Parameter
-        private CalculationDoc CheckCalculationDoc(string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
-            string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
-            string versicherungsscheinAusgestellt, string versicherungssumme, out bool isOk)
-        {
-            CalculationDoc calculationDoc = new();
-            bool typeOk = byte.TryParse(typ, out byte typeB);
-            bool calculationTypeOk = byte.TryParse(calculationType, out byte calculationTypeB);
-            bool berechnungbasisOk = decimal.TryParse(berechnungbasis, out decimal berechnungbasisDec);
-            bool inkludiereZusatzschutzOk = bool.TryParse(inkludiereZusatzschutz, out bool inkludiereZusatzschutzB);
-            bool zusatzschutzAufschlagOk = float.TryParse(zusatzschutzAufschlag, out float zusatzschutzAufschlagFloat);
-            bool hatWebshopOk = bool.TryParse(hatWebshop, out bool hatWebshopBool);
-            bool riskOk = byte.TryParse(risk, out byte riskB);
-            bool beitragOk = decimal.TryParse(beitrag, out decimal beitragDec);
-            bool versicherungsscheinAusgestelltOk = bool.TryParse(versicherungsscheinAusgestellt, out bool versicherungsscheinAusgestelltBool);
-            bool versicherungssummeOk = decimal.TryParse(versicherungssumme, out decimal versicherungssummeDec);
-
-            if (typeOk) { calculationDoc.Typ = typeB; }
-            if (calculationTypeOk) { calculationDoc.CalculationType = calculationTypeB; }
-            if (berechnungbasisOk) { calculationDoc.Berechnungbasis = berechnungbasisDec; }
-            if (inkludiereZusatzschutzOk) { calculationDoc.InkludiereZusatzschutz = inkludiereZusatzschutzB; }
-            if (zusatzschutzAufschlagOk) { calculationDoc.ZusatzschutzAufschlag = zusatzschutzAufschlagFloat; }
-            if (hatWebshopOk) { calculationDoc.HatWebshop = hatWebshopBool; }
-            if (riskOk) { calculationDoc.Risk = riskB; }
-            if (beitragOk) { calculationDoc.Beitrag = beitragDec; }
-            if (versicherungsscheinAusgestelltOk) { calculationDoc.VersicherungsscheinAusgestellt = versicherungsscheinAusgestelltBool; }
-            if (versicherungssummeOk) { calculationDoc.Versicherungssumme = versicherungssummeDec; }
-
-            isOk = typeOk && calculationTypeOk && berechnungbasisOk && inkludiereZusatzschutzOk && zusatzschutzAufschlagOk && hatWebshopOk &&
-                riskOk && beitragOk && versicherungsscheinAusgestelltOk && versicherungssummeOk;
-            return calculationDoc;
-        }
-
-        [ProducesResponseType(typeof(string), 200)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(typeof(string), 409)]
-        [ProducesResponseType(typeof(string), 500)]
-        [HttpPost("additem/{typ}/{calculationType}/{berechnungbasis}/{inkludiereZusatzschutz}/{zusatzschutzAufschlag}/{hatWebshop}/{risk}/{beitrag}/{versicherungsscheinAusgestellt}/{versicherungssumme}", Name = "PostAddItemUrl")]
-        public IActionResult PostAddItemUrl(string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
-            string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
-            string versicherungsscheinAusgestellt, string versicherungssumme)
-        {
-            CalculationDoc calculationDoc = CheckCalculationDoc(typ, calculationType, berechnungbasis, inkludiereZusatzschutz,
-                zusatzschutzAufschlag, hatWebshop, risk, beitrag, versicherungsscheinAusgestellt, versicherungssumme, out bool isOk);
+            bool isOk = CheckCalculationDoc(calculationDoc);
 
             if (isOk)
             {
@@ -86,5 +36,10 @@ namespace ASP.NetCoreAPI.Controllers
             }
             return Ok(isOk ? calculationDoc.Id : -1);
         }
+
+        private bool CheckCalculationDoc(CalculationDoc calculationDoc)
+            => calculationDoc.CalculationType < Enum.GetValues(typeof(CalculationDoc.CalculationTypeEn)).Length &&
+               calculationDoc.Typ < Enum.GetValues(typeof(CalculationDoc.DocumentTypeEn)).Length &&
+               calculationDoc.Risk < Enum.GetValues(typeof(CalculationDoc.RiskEn)).Length;
     }
 }

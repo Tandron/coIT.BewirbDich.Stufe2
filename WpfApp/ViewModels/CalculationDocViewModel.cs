@@ -7,25 +7,6 @@ namespace WpfApp.ViewModels
 {
     public class CalculationDocViewModel : BindableBase
     {
-        public enum CalculationTypeEn
-        {
-            TurnOver,           // Umsatz
-            BudgetarySum,       // Haushaltssumme
-            CountEmployees      // Anzahl der Mitarbeiter
-        }
-
-        public enum DocumentTypeEn
-        {
-            Offer,            
-            InsurancePolicy   
-        }
-        
-        public enum RiskEn
-        {
-            Gering,
-            Mittel
-        }
-
         protected readonly CalculationDoc _calculationDoc;
         
         public List<string> LiType { get; }
@@ -48,7 +29,7 @@ namespace WpfApp.ViewModels
                 "Angebot",
                 "Versicherungsschein"
             };
-            LiRiskType.AddRange(Enum.GetNames(typeof(RiskEn)));
+            LiRiskType.AddRange(Enum.GetNames(typeof(CalculationDoc.RiskEn)));
             LiAdditionalProtectionSurcharge.AddRange(new string[] { "10%", "20%", "25%" });
             Versicherungssumme = 100000m;
         }

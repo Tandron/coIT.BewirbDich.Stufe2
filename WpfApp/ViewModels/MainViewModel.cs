@@ -41,7 +41,7 @@ namespace WpfApp.ViewModels
             OpenSaveCalcDialog?.Invoke();
         }
 
-        private bool CanExeIssueFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.InsurancePolicy &&
+        private bool CanExeIssueFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDoc.DocumentTypeEn.InsurancePolicy &&
                 !_selectedCalculationDocItemVm.VersicherungsscheinAusgestellt;
 
         private void IssueFunc()
@@ -53,12 +53,12 @@ namespace WpfApp.ViewModels
             }
         }
 
-        private bool CanExeAcceptOfferFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.Offer;
+        private bool CanExeAcceptOfferFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDoc.DocumentTypeEn.Offer;
 
         private void AcceptOfferFunc()
         {
             if (_selectedCalculationDocItemVm is not null)
-                _selectedCalculationDocItemVm.Typ = (byte)CalculationDocViewModel.DocumentTypeEn.InsurancePolicy;
+                _selectedCalculationDocItemVm.Typ = (byte)CalculationDoc.DocumentTypeEn.InsurancePolicy;
         }
 
         private void LoadFromDatabase()
@@ -84,13 +84,10 @@ namespace WpfApp.ViewModels
             }
         }
 
+        // https://visualstudiomagazine.com/articles/2015/10/01/consume-a-webapi.aspx
         private void NewCalcFunc()
         {
             EditCalculationDocViewModel editCalculationDocVm = new();
-
-            //string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
-            //string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
-            //string versicherungsscheinAusgestellt, string versicherungssumme)
 
             OpenNewCalcDialog?.Invoke(editCalculationDocVm, () =>
             {
@@ -98,20 +95,14 @@ namespace WpfApp.ViewModels
                 var request = new RestRequest("additem", Method.Post);
 
                 request.AddJsonBody(editCalculationDocVm.CalculationDoc);
-                _client.Execute(request);
+                var response = _client.Execute(request);
 
-
-
-
-
-
-                //var json = client.MakeRequest();
-
-                //if (!string.IsNullOrEmpty(json) && int.TryParse(json, out int idOk) && idOk > 0)
-                //{
-                //    editCalculationDocVm.Id = idOk;
-                //    CalculationDocItemsVm.Add(editCalculationDocVm);
-                //}
+                if (response.StatusCode == System.Net.HttpStatusCode.OK && !string.IsNullOrEmpty(response.Content) && 
+                    int.TryParse(response.Content, out int idNumber) && idNumber > 0)
+                {
+                    editCalculationDocVm.Id = idNumber;
+                    CalculationDocItemsVm.Add(editCalculationDocVm);
+                }
             });
         }
     }

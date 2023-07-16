@@ -7,6 +7,25 @@ namespace ASP.NetCoreAPI.Models
 {
     public class CalculationDoc
     {
+        public enum CalculationTypeEn
+        {
+            TurnOver,           // Umsatz
+            BudgetarySum,       // Haushaltssumme
+            CountEmployees      // Anzahl der Mitarbeiter
+        }
+
+        public enum DocumentTypeEn
+        {
+            Offer,
+            InsurancePolicy
+        }
+
+        public enum RiskEn
+        {
+            Gering,
+            Mittel
+        }
+
 #if ASPNetCoreAPI
         [Key]
 #endif

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:WpfApp.ViewModels"
-        d:DataContext="{d:DesignInstance Type=vm:EditCalculationDocViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:EditCalculationDocViewModel, IsDesignTimeCreatable=False}"
         Title="Neue Kalkulation" Width="450" Height="400" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="b2v" />
