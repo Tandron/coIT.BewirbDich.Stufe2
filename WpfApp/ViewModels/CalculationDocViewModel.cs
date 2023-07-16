@@ -27,6 +27,7 @@ namespace WpfApp.ViewModels
         }
 
         protected readonly CalculationDoc _calculationDoc;
+        
         public List<string> LiType { get; }
         public List<string> LiCalculationType { get; }
         public List<string> LiRiskType { get; } = new();

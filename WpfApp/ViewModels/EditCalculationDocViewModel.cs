@@ -1,15 +1,18 @@
-﻿using System;
+﻿using ASP.NetCoreAPI.Models;
+using System;
 
 namespace WpfApp.ViewModels
 {
     public class EditCalculationDocViewModel : CalculationDocViewModel
     {
+        public CalculationDoc CalculationDoc { get => _calculationDoc; }
+
         public EditCalculationDocViewModel() : base()
         {
 
         }
 
-        public void CalculationDoc()
+        public void SaveCalculationDoc()
         {
             switch (_calculationDoc.CalculationType)
             {
