@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Windows.Navigation;
 using WpfApp.Models;
 
 namespace WpfApp.ViewModels
@@ -13,23 +14,32 @@ namespace WpfApp.ViewModels
     {
         private const string _strEndPoint = @"https://localhost:7243/CalculationDoc/";
         public event Action<EditCalculationDocViewModel, Action> OpenNewCalcDialog = delegate { };
-        public DelegateCommand ConnectingCommand { get; }
+        public event Action OpenSaveCalcDialog = delegate { };
         public DelegateCommand NewCalcCommand { get; }
         public DelegateCommand AcceptOfferCommand { get; }
         public DelegateCommand IssueCommand { get; }
-        
+        public DelegateCommand SaveCommand { get; }
+
         // Die ObservableCollection könnte man auch in eigenen ViewModel CalculationDocMainViewModel auslagern
         public ObservableCollection<CalculationDocViewModel> CalculationDocItemsVm { get; }
         private CalculationDocViewModel _selectedCalculationDocItemVm = new();
 
         public MainViewModel()
         {
-            ConnectingCommand = new DelegateCommand(ConnectingFunc);
             NewCalcCommand = new DelegateCommand(NewCalcFunc);
             AcceptOfferCommand = new DelegateCommand(AcceptOfferFunc, CanExeAcceptOfferFunc);
             IssueCommand = new DelegateCommand(IssueFunc, CanExeIssueFunc);
+            SaveCommand = new DelegateCommand(SaveFunc, CanExeSaveFunc);
             CalculationDocItemsVm = new ObservableCollection<CalculationDocViewModel>();
             LoadFromDatabase();
+        }
+
+        private bool CanExeSaveFunc() => false;
+
+        private void SaveFunc()
+        {
+            //_repo.Save();  Unnötig wird eh alles in der Datenbank gespeichert
+            OpenSaveCalcDialog?.Invoke();
         }
 
         private bool CanExeIssueFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.InsurancePolicy &&
@@ -40,7 +50,7 @@ namespace WpfApp.ViewModels
 
         }
 
-        private bool CanExeAcceptOfferFunc() =>  _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.Offer;
+        private bool CanExeAcceptOfferFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.Offer;
 
         private void AcceptOfferFunc()
         {
@@ -58,11 +68,9 @@ namespace WpfApp.ViewModels
 
             if (!string.IsNullOrEmpty(json))
             {
-                JsonRepository jsonRepository = new(json);
+                var liDocs = JsonRepository.JsonDeserializeRepository(json);
 
-                var liDocs = jsonRepository.CalculationDocs;
-
-                foreach ( var liDoc in liDocs)
+                foreach (var liDoc in liDocs)
                 {
                     CalculationDocItemsVm.Add(new(liDoc));
                 }
@@ -87,15 +95,15 @@ namespace WpfApp.ViewModels
             //string typ, string calculationType, string berechnungbasis, string inkludiereZusatzschutz,
             //string zusatzschutzAufschlag, string hatWebshop, string risk, string beitrag,
             //string versicherungsscheinAusgestellt, string versicherungssumme)
-            
+
             OpenNewCalcDialog?.Invoke(editCalculationDocVm, () =>
             {
                 editCalculationDocVm.CalculationDoc();
 
                 var client = new RestClientViewModel
                 {
-                    EndPoint = _strEndPoint + "additem/" + editCalculationDocVm.Typ.ToString() + "/" + 
-                        editCalculationDocVm.CalculationType.ToString() + "/" + editCalculationDocVm.Berechnungbasis.ToString() + "/" + 
+                    EndPoint = _strEndPoint + "additem/" + editCalculationDocVm.Typ.ToString() + "/" +
+                        editCalculationDocVm.CalculationType.ToString() + "/" + editCalculationDocVm.Berechnungbasis.ToString() + "/" +
                         editCalculationDocVm.InkludiereZusatzschutz.ToString() + "/" + editCalculationDocVm.ZusatzschutzAufschlag.ToString() + "/" +
                         editCalculationDocVm.HatWebshop.ToString() + "/" + editCalculationDocVm.RiskType.ToString() + "/" +
                         editCalculationDocVm.Beitrag.ToString() + "/" + editCalculationDocVm.VersicherungsscheinAusgestellt.ToString() + "/" +

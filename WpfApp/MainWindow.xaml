@@ -19,7 +19,7 @@
             <Button Content="+ NEU" Margin="4" Command="{Binding NewCalcCommand}" TabIndex="0" Width="75" Height="41"/>
             <Button Content="Annehmen 👍" Margin="4" Command="{Binding AcceptOfferCommand}" TabIndex="3" Width="94" Height="41"/>
             <Button Content="Ausstellen 🖨" Margin="4" Command="{Binding IssueCommand}" TabIndex="4" Width="94" Height="41"/>
-            <Button Content="Speichern" Margin="4" HorizontalAlignment="Right" Command="{Binding ConnectingCommand}"
+            <Button Content="Speichern" Margin="4" HorizontalAlignment="Right" Command="{Binding SaveCommand}"
                     TabIndex="1" Width="75" Height="41"/>
         </DockPanel>
         <DataGrid Grid.Row="1" Margin="4" Name="DG1" ItemsSource="{Binding CalculationDocItemsVm}" AutoGenerateColumns="False" TabIndex="1" 

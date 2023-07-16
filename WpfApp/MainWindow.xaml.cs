@@ -20,7 +20,13 @@ namespace WpfApp
             if (args.NewValue != null && args.NewValue is MainViewModel mainVm)
             {
                 mainVm.OpenNewCalcDialog += MainVm_OpenNewCalcDialog;
+                mainVm.OpenSaveCalcDialog += MainVm_OpenSaveCalcDialog;
             }
+        }
+
+        private void MainVm_OpenSaveCalcDialog()
+        {
+            MessageBox.Show("Daten gespeichert. (Welche Daten, sind doch in der Datenbank...)", "Vorgang", MessageBoxButton.OK);
         }
 
         private void MainVm_OpenNewCalcDialog(EditCalculationDocViewModel editCalculationDocVm, Action action)
