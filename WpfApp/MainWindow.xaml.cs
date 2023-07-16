@@ -21,7 +21,13 @@ namespace WpfApp
             {
                 mainVm.OpenNewCalcDialog += MainVm_OpenNewCalcDialog;
                 mainVm.OpenSaveCalcDialog += MainVm_OpenSaveCalcDialog;
+                mainVm.OpenIssueCalcDialog += MainVm_OpenIssueCalcDialog;
             }
+        }
+
+        private void MainVm_OpenIssueCalcDialog()
+        {
+            MessageBox.Show("Der Versicherungsschein wurde an den Versicherungsnehmer verschickt.", "Vorgang", MessageBoxButton.OK);
         }
 
         private void MainVm_OpenSaveCalcDialog()

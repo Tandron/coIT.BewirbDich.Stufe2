@@ -3,9 +3,6 @@ using Prism.Mvvm;
 using RestSharp;     // Tests
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Windows.Navigation;
 using WpfApp.Models;
 
 namespace WpfApp.ViewModels
@@ -15,6 +12,7 @@ namespace WpfApp.ViewModels
         private const string _strEndPoint = @"https://localhost:7243/CalculationDoc/";
         public event Action<EditCalculationDocViewModel, Action> OpenNewCalcDialog = delegate { };
         public event Action OpenSaveCalcDialog = delegate { };
+        public event Action OpenIssueCalcDialog = delegate { };
         public DelegateCommand NewCalcCommand { get; }
         public DelegateCommand AcceptOfferCommand { get; }
         public DelegateCommand IssueCommand { get; }
@@ -47,14 +45,19 @@ namespace WpfApp.ViewModels
 
         private void IssueFunc()
         {
-
+            if (_selectedCalculationDocItemVm is not null)
+            {
+                _selectedCalculationDocItemVm.VersicherungsscheinAusgestellt = true;
+                OpenIssueCalcDialog?.Invoke();
+            }
         }
 
         private bool CanExeAcceptOfferFunc() => _selectedCalculationDocItemVm.Typ == (byte)CalculationDocViewModel.DocumentTypeEn.Offer;
 
         private void AcceptOfferFunc()
         {
-
+            if (_selectedCalculationDocItemVm is not null)
+                _selectedCalculationDocItemVm.Typ = (byte)CalculationDocViewModel.DocumentTypeEn.InsurancePolicy;
         }
 
         private void LoadFromDatabase()
@@ -112,7 +115,7 @@ namespace WpfApp.ViewModels
                 };
                 var json = client.MakeRequest();
 
-                if (!string.IsNullOrEmpty(json) && int.TryParse(json, out int idOk))
+                if (!string.IsNullOrEmpty(json) && int.TryParse(json, out int idOk) && idOk > 0)
                 {
                     editCalculationDocVm.Id = idOk;
                     CalculationDocItemsVm.Add(editCalculationDocVm);
